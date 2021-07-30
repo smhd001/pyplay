@@ -17,15 +17,16 @@ def dmenu_chose(s: list) -> str:
 
 def play(name: str, season: int, episode: int):
     path = find_path(name, season, episode)
+    print(path)
     # path = find_path(name, 0, int(sys.argv[2]))
     if is_sub:
         sub_list = find_sub(name, season, episode)
         if sub_list:
             if len(sub_list) > 1:
                 sub_list[0] = dmenu_chose(sub_list)
-            subprocess.run([player, path,options, "--sub-file=" + sub_list[0]])
+            subprocess.run([player, path,*options, "--sub-file=" + sub_list[0]])
             return
-    subprocess.run([player,path,options])
+    subprocess.run([player,path,*options])
 
 
 def main():
@@ -43,7 +44,7 @@ if __name__ == "__main__":
     player = conf["player"]
     options = conf["options"]
     if conf["is_full_screen"]:
-       options += "--fs"
+       options.append("--fs")
     print(options)
     is_sub = conf["open_sub"]
     main()

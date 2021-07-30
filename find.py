@@ -20,11 +20,11 @@ def find_dir(name: str) -> str:
     return name
 
 
-def find_ep(directory: str, episode: int) -> str:
+def find_ep(directory: str,season : int, episode: int) -> str:
     a = []
     print(directory)
     for ep in glob(directory + "/**"):
-        if f"{episode:02d}" in ep:
+        if f"{episode:02d}" in ep and is_S_and_E_match(ep,season,episode) and is_video(ep):
             a.append(ep)
     if len(a) == 1:
         return a[0]
@@ -41,7 +41,7 @@ def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
     if season:
         directory = directory + "/" + "season" + f"{season:02d}"
-    return find_ep(directory, episode)
+    return find_ep(directory,season, episode)
 
 
 def find_sub(name: str, season: int, episode: int) -> list:
