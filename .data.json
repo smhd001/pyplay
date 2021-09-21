@@ -4,7 +4,7 @@
         "open_sub": true,
         "video_dir": "~/Videos/series",
 	"is_full_screen": true,
-	"options": []
+	"options": ["--resume-playback-check-mtime"]
     },
     "series": [],
     "videos": []

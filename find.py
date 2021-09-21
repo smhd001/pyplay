@@ -2,6 +2,7 @@ import os
 import re
 from glob import glob
 from os.path import isdir
+from sre_constants import RANGE_UNI_IGNORE
 from typing import Dict
 
 
@@ -14,7 +15,7 @@ def is_played_before(s_name: str, series:list[Dict] ) -> bool or str:
 
 def find_dir(name: str) -> str:
     for path in glob("**", recursive=True):
-        if name in path and isdir(path):
+        if name in path.lower() and isdir(path):
             name = path
             break
     return name
@@ -28,6 +29,8 @@ def find_ep(directory: str,season : int, episode: int) -> str:
             a.append(ep)
     if len(a) == 1:
         return a[0]
+    if len(a) == 0:
+        return None
     max_c = 0
     s = a[0]
     for ep in a:
@@ -39,9 +42,12 @@ def find_ep(directory: str,season : int, episode: int) -> str:
 
 def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
-    if season:
-        directory = directory + "/" + "season" + f"{season:02d}"
-    return find_ep(directory,season, episode)
+    ep = find_ep(directory + "/" + "season" + f"{season:02d}",season, episode)
+    if ep is None:
+        ep = find_ep(directory,season, episode)
+    if ep is None:
+        ep = find_ep(directory+ "/" + "season" + f"{season}",season, episode)
+    return ep
 
 
 def find_sub(name: str, season: int, episode: int) -> list:
@@ -67,6 +73,17 @@ def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
         s_e = re.findall("\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
+    
+    for dirs in name.split("/"):
+        if s_e := re.findall("^[sS]\d+", dirs):
+            s_e = re.findall("\d+", s_e[0])
+            if int(s_e[0]) != season :
+                return False
+    # if s_e := re.findall("[sS]\d+", name):
+    #     s_e = re.findall("\d+", s_e[0])
+    #     if int(s_e[0]) != season :
+    #         return False
+
     return True
 
 

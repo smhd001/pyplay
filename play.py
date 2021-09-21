@@ -5,7 +5,7 @@ import sys
 from os.path import expanduser
 from find import find_path, find_sub
 
-
+#bug  pl office 7 23    
 def dmenu_chose(s: list) -> str:
     subs = ""
     for i in s:
@@ -17,10 +17,10 @@ def dmenu_chose(s: list) -> str:
 
 def play(name: str, season: int, episode: int):
     path = find_path(name, season, episode)
-    print(path)
-    # path = find_path(name, 0, int(sys.argv[2]))
+    print("***" + path)
     if is_sub:
         sub_list = find_sub(name, season, episode)
+        print(sub_list)
         if sub_list:
             if len(sub_list) > 1:
                 sub_list[0] = dmenu_chose(sub_list)
@@ -30,7 +30,6 @@ def play(name: str, season: int, episode: int):
 
 
 def main():
-    print(sys.argv[0][:-7])
     play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
 
 
