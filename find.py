@@ -6,6 +6,17 @@ from sre_constants import RANGE_UNI_IGNORE
 from typing import Dict
 
 
+#patern of sub
+
+#patern s01e02 S1E3 or s01-e02
+#regex "[sS]\d+-?[eE]\d+"
+
+#patern 02x01 
+#regex \d+x\d+
+
+#dir patern 
+#  s01/  and season01/ season1/
+
 def is_played_before(s_name: str, series:list[Dict] ) -> bool or str:
     for s in series:
         if s_name in s["name"]:
@@ -23,7 +34,7 @@ def find_dir(name: str) -> str:
 
 def find_ep(directory: str,season : int, episode: int) -> str:
     a = []
-    print(directory)
+    # print(directory)
     for ep in glob(directory + "/**"):
         if f"{episode:02d}" in ep and is_S_and_E_match(ep,season,episode) and is_video(ep):
             a.append(ep)
@@ -52,12 +63,8 @@ def find_path(name: str, season: int, episode: int) -> str:
 
 def find_sub(name: str, season: int, episode: int) -> list:
     directory = find_dir(name)
-    return [x for x in glob(directory + "/" + "**", recursive=True) if is_s_match(name, season) and
+    return [x for x in glob(directory + "/" + "**", recursive=True) if is_s_match(x, season) and
             is_sub_file(x) and is_S_and_E_match(x, season, episode)]
-
-    # TODO a better condition like: season01/20.faln.720.srt vs 1.flan.720.str
-    # return [x for x in glob(directory + "/" + "**",recursive=True) if is_sub_file(x) and
-    #       (x.count(f"{season:02d}") + x.count(f"{episode:02d}")) > 1]
 
 
 def is_video(name: str) -> bool:
@@ -65,24 +72,19 @@ def is_video(name: str) -> bool:
 
 
 def is_sub_file(name: str) -> bool:
-    return name.endswith(".srt") and os.path.isfile(name)
+    return (name.endswith(".srt") or name.endswith(".ass")) and os.path.isfile(name)
 
 
 def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
-    if s_e := re.findall("[sS]\d+[eE]\d+", name):
+    if s_e := re.findall("[sS]\d+-?[eE]\d+", name):
         s_e = re.findall("\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
     
-    for dirs in name.split("/"):
-        if s_e := re.findall("^[sS]\d+", dirs):
-            s_e = re.findall("\d+", s_e[0])
-            if int(s_e[0]) != season :
-                return False
-    # if s_e := re.findall("[sS]\d+", name):
-    #     s_e = re.findall("\d+", s_e[0])
-    #     if int(s_e[0]) != season :
-    #         return False
+    if s_e := re.findall("\d+x\d+", name):
+        s_e = re.findall("\d+", s_e[0])
+        if int(s_e[0]) != season or int(s_e[1]) != episode:
+            return False
 
     return True
 
@@ -92,4 +94,14 @@ def is_s_match(name: str, season: int) -> bool:
         s = re.findall("\d+", s[0])
         if int(s[0]) != season:
             return False
+
+    for dirs in name.split("/"):
+        if s_e := re.findall("^[sS]\d+", dirs):
+            s_e = re.findall("\d+", s_e[0])
+            if int(s_e[0]) != season :
+                return False
+    # if s_e := re.findall("[sS]\d+", name):
+    #     s_e = re.findall("\d+", s_e[0])
+    #     if int(s_e[0]) != season :
+    #         return False
     return True
