@@ -53,7 +53,7 @@ def main():
 
 
 if __name__ == "__main__":
-    with open(sys.argv[0][:-7] + ".data.json") as f:
+    with open(sys.argv[0][:-7] + "conf.json") as f:
         data = json.load(f)
     conf = data["conf"]
     print(conf)
