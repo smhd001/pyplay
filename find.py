@@ -2,27 +2,28 @@ import os
 import re
 from glob import glob
 from os.path import isdir
-from sre_constants import RANGE_UNI_IGNORE
 from typing import Dict
 
+"""
+patern of sub
 
-#patern of sub
+patern s01e02 S1E3 or s01-e02
+regex "[sS]\d+-?[eE]\d+"
 
-#patern s01e02 S1E3 or s01-e02
-#regex "[sS]\d+-?[eE]\d+"
+patern 02x01 
+regex \d+x\d+
 
-#patern 02x01 
-#regex \d+x\d+
-
-#dir patern 
-#  s01/  and season01/ season1/
-
+dir patern 
+  s01/  and season01/ season1/
+"""
+"""
+TODO
 def is_played_before(s_name: str, series:list[Dict] ) -> bool or str:
     for s in series:
         if s_name in s["name"]:
             return s
     return False
-
+"""
 
 def find_dir(name: str) -> str:
     for path in glob("**", recursive=True):
@@ -63,8 +64,13 @@ def find_path(name: str, season: int, episode: int) -> str:
 
 def find_sub(name: str, season: int, episode: int) -> list:
     directory = find_dir(name)
-    return [x for x in glob(directory + "/" + "**", recursive=True) if is_s_match(x, season) and
-            is_sub_file(x) and is_S_and_E_match(x, season, episode)]
+    subs = []
+    for x in glob(directory + "/" + "**", recursive=True) :
+            if (is_s_match(x, season) and 
+            is_sub_file(x) and 
+            is_S_and_E_match(x, season, episode)):
+                subs.append(x)
+    return subs
 
 
 def is_video(name: str) -> bool:
@@ -94,14 +100,13 @@ def is_s_match(name: str, season: int) -> bool:
         s = re.findall("\d+", s[0])
         if int(s[0]) != season:
             return False
-
     for dirs in name.split("/"):
         if s_e := re.findall("^[sS]\d+", dirs):
             s_e = re.findall("\d+", s_e[0])
             if int(s_e[0]) != season :
                 return False
+    return True
     # if s_e := re.findall("[sS]\d+", name):
     #     s_e = re.findall("\d+", s_e[0])
     #     if int(s_e[0]) != season :
     #         return False
-    return True
