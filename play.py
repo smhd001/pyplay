@@ -11,7 +11,7 @@ def dmenu_chose(s: list) -> str:
     for i in s:
         subs += i
         subs += "\n"
-    a = os.popen("echo " + "\"" + subs[:-1] + "\"" + "|" + "dmenu")
+    a = os.popen("echo " + "\"" + subs[:-1] + "\"" + "|" + "dmenu " + d_args)
     return a.read()[:-1]
 
 def print_info(path :str , sub:str="no sub" ) -> None:
@@ -65,4 +65,5 @@ if __name__ == "__main__":
        options.append("--fs")
     print(options)
     is_sub = conf["open_sub"]
+    d_args = " ".join(conf["dmenu-options"])
     main()

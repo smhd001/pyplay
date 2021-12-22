@@ -14,7 +14,7 @@ patern 02x01
 regex \d+x\d+
 
 dir patern 
-  s01/  and season01/ season1/
+  s01/  and season01/ season1/ 
 """
 """
 TODO
@@ -78,7 +78,7 @@ def is_video(name: str) -> bool:
 
 
 def is_sub_file(name: str) -> bool:
-    return (name.endswith(".srt") or name.endswith(".ass")) and os.path.isfile(name)
+    return (name.lower().endswith(".srt") or name.lower().endswith(".ass")) and os.path.isfile(name)
 
 
 def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
