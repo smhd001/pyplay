@@ -36,7 +36,8 @@ def play(name: str, season: int, episode: int):
         # print(sub_list)
         if sub_list:
             if len(sub_list) > 1:
-                sub_list[0] = dmenu_chose(sub_list)
+                if is_chose_sub:
+                    sub_list[0] = dmenu_chose(sub_list)
                 if not sub_list[0]:
                     print_info(path)
                     subprocess.run([player,path,*options])
@@ -65,5 +66,6 @@ if __name__ == "__main__":
        options.append("--fs")
     print(options)
     is_sub = conf["open_sub"]
+    is_chose_sub = conf["is_chose_sub"]
     d_args = " ".join(conf["dmenu-options"])
     main()
