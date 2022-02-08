@@ -50,7 +50,10 @@ def play(name: str, season: int, episode: int):
 
 
 def main():
-    play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
+    try:
+        play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
+    except Exception as e:
+        print("file not found")
 
 
 if __name__ == "__main__":
