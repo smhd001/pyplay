@@ -6,12 +6,12 @@ from os.path import expanduser
 from find import find_path, find_sub
 
 #bug  pl office 7 23    
-def dmenu_chose(s: list) -> str:
+def menu_chose(s: list) -> str:
     subs = ""
     for i in s:
         subs += i
         subs += "\n"
-    a = os.popen("echo " + "\"" + subs[:-1] + "\"" + "|" + "dmenu " + d_args)
+    a = os.popen("echo " + "\"" + subs[:-1] + "\"" + "|" + m_program + " " + m_args)
     return a.read()[:-1]
 
 def print_info(path :str , sub:str="no sub" ) -> None:
@@ -37,7 +37,7 @@ def play(name: str, season: int, episode: int):
         if sub_list:
             if len(sub_list) > 1:
                 if is_chose_sub:
-                    sub_list[0] = dmenu_chose(sub_list)
+                    sub_list[0] = menu_chose(sub_list)
                 if not sub_list[0]:
                     print_info(path)
                     subprocess.run([player,path,*options])
@@ -70,5 +70,6 @@ if __name__ == "__main__":
     print(options)
     is_sub = conf["open_sub"]
     is_chose_sub = conf["is_chose_sub"]
-    d_args = " ".join(conf["dmenu-options"])
+    m_args = " ".join(conf["menu_options"])
+    m_program = conf["menu_program"]
     main()
