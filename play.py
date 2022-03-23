@@ -52,7 +52,7 @@ def play(name: str, season: int, episode: int):
 def main():
     try:
         play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
-    except Exception as e:
+    except Exception:
         print("file not found")
 
 

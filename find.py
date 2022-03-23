@@ -42,7 +42,7 @@ def find_ep(directory: str,season : int, episode: int) -> str:
     if len(a) == 1:
         return a[0]
     if len(a) == 0:
-        return None
+        return ""
     max_c = 0
     s = a[0]
     for ep in a:
@@ -55,9 +55,9 @@ def find_ep(directory: str,season : int, episode: int) -> str:
 def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
     ep = find_ep(directory + "/" + "season" + f"{season:02d}",season, episode)
-    if ep is None:
+    if ep == "":
         ep = find_ep(directory,season, episode)
-    if ep is None:
+    if ep is "":
         ep = find_ep(directory+ "/" + "season" + f"{season}",season, episode)
     return ep
 
