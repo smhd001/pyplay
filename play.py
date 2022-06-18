@@ -5,6 +5,14 @@ import sys
 from os.path import expanduser
 from find import find_path, find_sub
 
+#TODO 
+"""
+    1. add sub_inc
+    2. add sub_exc
+    3. add history
+    4. add some arges
+"""
+
 #bug  pl office 7 23    
 def menu_chose(s: list) -> str:
     subs = ""
