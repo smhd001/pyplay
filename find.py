@@ -69,8 +69,8 @@ def find_sub(name: str, season: int, episode: int , inc_p : list[str] , ex_p : l
             if (is_s_match(x, season) and 
             is_sub_file(x) and 
             is_S_and_E_match(x, season, episode)):
-                if not any(p in x for p in ex_p):
-                    if any(p in x for p in inc_p):
+                if not any(p in x.lower() for p in ex_p):
+                    if all(p in x.lower() for p in inc_p):
                         subs.append(x)
     return subs
 
