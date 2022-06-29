@@ -37,10 +37,10 @@ def print_info(path :str , sub:str="no sub" ) -> None:
     print("#####***************************************#####")
     print()
 
-def play(name: str, season: int, episode: int):
+def play(name: str, season: int, episode: int , inc_p : str , ex_p : str):
     path = find_path(name, season, episode)
     if is_sub:
-        sub_list = find_sub(name, season, episode)
+        sub_list = find_sub(name, season, episode, inc_p , ex_p)
         # print(sub_list)
         if sub_list:
             if len(sub_list) > 1:
@@ -59,7 +59,15 @@ def play(name: str, season: int, episode: int):
 
 def main():
     try:
-        play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]))
+        if "-ex" in sys.argv:
+            ex = sys.argv[sys.argv.index("-ex") + 1]
+        else:
+            ex = ""
+        if "-inc" in sys.argv:
+            inc = sys.argv[sys.argv.index("-inc") + 1]
+        else:
+            inc = ""
+        play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]),inc,ex)
     except Exception:
         print("file not found")
 

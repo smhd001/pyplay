@@ -62,14 +62,15 @@ def find_path(name: str, season: int, episode: int) -> str:
     return ep
 
 
-def find_sub(name: str, season: int, episode: int) -> list:
+def find_sub(name: str, season: int, episode: int , inc_p : str , ex_p : str) -> list:
     directory = find_dir(name)
     subs = []
     for x in glob(directory + "/" + "**", recursive=True) :
             if (is_s_match(x, season) and 
             is_sub_file(x) and 
             is_S_and_E_match(x, season, episode)):
-                subs.append(x)
+                if inc_p in x.lower() and not ex_p in x.lower():
+                    subs.append(x)
     return subs
 
 
