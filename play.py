@@ -37,7 +37,7 @@ def print_info(path :str , sub:str="no sub" ) -> None:
     print("#####***************************************#####")
     print()
 
-def play(name: str, season: int, episode: int , inc_p : str , ex_p : str):
+def play(name: str, season: int, episode: int , inc_p : list[str] , ex_p : list[str]):
     path = find_path(name, season, episode)
     if is_sub:
         sub_list = find_sub(name, season, episode, inc_p , ex_p)
@@ -61,10 +61,12 @@ def main():
     try:
         if "-ex" in sys.argv:
             ex = sys.argv[sys.argv.index("-ex") + 1]
+            ex = ex.split(",")
         else:
             ex = ""
         if "-inc" in sys.argv:
             inc = sys.argv[sys.argv.index("-inc") + 1]
+            inc = inc.split(",")
         else:
             inc = ""
         play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]),inc,ex)
