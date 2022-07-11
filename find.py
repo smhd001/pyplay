@@ -2,7 +2,6 @@ import os
 import re
 from glob import glob
 from os.path import isdir
-from typing import Dict
 
 """
 patern of sub
@@ -25,6 +24,7 @@ def is_played_before(s_name: str, series:list[Dict] ) -> bool or str:
     return False
 """
 
+
 def find_dir(name: str) -> str:
     for path in glob("**", recursive=True):
         if name in path.lower() and isdir(path):
@@ -33,11 +33,15 @@ def find_dir(name: str) -> str:
     return name
 
 
-def find_ep(directory: str,season : int, episode: int) -> str:
+def find_ep(directory: str, season: int, episode: int) -> str:
     a = []
     # print(directory)
     for ep in glob(directory + "/**"):
-        if f"{episode:02d}" in ep and is_S_and_E_match(ep,season,episode) and is_video(ep):
+        if (
+            f"{episode:02d}" in ep
+            and is_S_and_E_match(ep, season, episode)
+            and is_video(ep)
+        ):
             a.append(ep)
     if len(a) == 1:
         return a[0]
@@ -54,24 +58,28 @@ def find_ep(directory: str,season : int, episode: int) -> str:
 
 def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
-    ep = find_ep(directory + "/" + "season" + f"{season:02d}",season, episode)
+    ep = find_ep(directory + "/" + "season" + f"{season:02d}", season, episode)
     if ep == "":
-        ep = find_ep(directory,season, episode)
+        ep = find_ep(directory, season, episode)
     if ep is "":
-        ep = find_ep(directory+ "/" + "season" + f"{season}",season, episode)
+        ep = find_ep(directory + "/" + "season" + f"{season}", season, episode)
     return ep
 
 
-def find_sub(name: str, season: int, episode: int , inc_p : list[str] , ex_p : list[str]) -> list:
+def find_sub(
+    name: str, season: int, episode: int, inc_p: list[str], ex_p: list[str]
+) -> list:
     directory = find_dir(name)
     subs = []
-    for x in glob(directory + "/" + "**", recursive=True) :
-            if (is_s_match(x, season) and 
-            is_sub_file(x) and 
-            is_S_and_E_match(x, season, episode)):
-                if not any(p in x.lower() for p in ex_p):
-                    if all(p in x.lower() for p in inc_p):
-                        subs.append(x)
+    for x in glob(directory + "/" + "**", recursive=True):
+        if (
+            is_s_match(x, season)
+            and is_sub_file(x)
+            and is_S_and_E_match(x, season, episode)
+        ):
+            if not any(p in x.lower() for p in ex_p):
+                if all(p in x.lower() for p in inc_p):
+                    subs.append(x)
     return subs
 
 
@@ -80,7 +88,9 @@ def is_video(name: str) -> bool:
 
 
 def is_sub_file(name: str) -> bool:
-    return (name.lower().endswith(".srt") or name.lower().endswith(".ass")) and os.path.isfile(name)
+    return (
+        name.lower().endswith(".srt") or name.lower().endswith(".ass")
+    ) and os.path.isfile(name)
 
 
 def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
@@ -88,7 +98,7 @@ def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
         s_e = re.findall("\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
-    
+
     if s_e := re.findall("\d+x\d+", name):
         s_e = re.findall("\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
@@ -105,7 +115,7 @@ def is_s_match(name: str, season: int) -> bool:
     for dirs in name.split("/"):
         if s_e := re.findall("^[sS]\d+", dirs):
             s_e = re.findall("\d+", s_e[0])
-            if int(s_e[0]) != season :
+            if int(s_e[0]) != season:
                 return False
     return True
     # if s_e := re.findall("[sS]\d+", name):
