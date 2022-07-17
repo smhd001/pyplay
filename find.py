@@ -105,9 +105,6 @@ def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
             return False
 
     s_e = map(int,re.findall("\d+", name))
-    print(s_e)
-    print(episode)
-    print(episode in s_e)
     if episode in s_e:
         return True
     return False

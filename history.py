@@ -7,6 +7,16 @@ hist_path = "/home/mohammad/projects/PP/python/play/.history"
 os.chdir(video_dir)
 
 
+def form_history(ser_name: str, replay: bool) -> (str, int, int):
+    ser_name = find_dir(ser_name)
+    season, episode = load_history(ser_name)
+    if not replay:
+        episode += 1
+    print("playing from history: ", ser_name, "ep", episode, "season", season)
+    save_history(ser_name, season, episode)
+    return season, episode
+
+
 def load_history(ser_name: str) -> (int, int):
     ser_name = find_dir(ser_name)
     with open(hist_path, "r") as f:
@@ -27,11 +37,3 @@ def save_history(ser_name: str, season: int, episode: int) -> None:
     history[ser_name] = {"season": season, "episode": episode}
     with open(hist_path, "w") as f:
         json.dump(history, f, indent=4)
-
-
-def play_form_history(ser_name: str) -> None:
-    ser_name = find_dir(ser_name)
-    season, episode = load_history(ser_name)
-    # play.play(ser_name, season, episode)
-    print("playing: ", ser_name, "ep", episode, "season", season)
-    save_history(ser_name, season, episode + 1)

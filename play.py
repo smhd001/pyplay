@@ -5,7 +5,9 @@ import subprocess
 import sys
 from os.path import expanduser
 from find import find_path, find_sub
+from history import form_history, save_history
 
+debug = False
 # TODO
 """
     1. add sub_inc
@@ -67,15 +69,31 @@ def main():
         if "-ex" in sys.argv:
             ex = sys.argv[sys.argv.index("-ex") + 1]
             ex = ex.split(",")
+            del sys.argv[sys.argv.index("-ex") : sys.argv.index("-ex") + 2]
         else:
             ex = ""
         if "-inc" in sys.argv:
             inc = sys.argv[sys.argv.index("-inc") + 1]
             inc = inc.split(",")
+            del sys.argv[sys.argv.index("-inc") : sys.argv.index("-inc") + 2]
         else:
             inc = ""
-        play(sys.argv[1], int(sys.argv[2]), int(sys.argv[3]), inc, ex)
-    except Exception:
+        if "-r" in sys.argv:
+            replay = True
+            del sys.argv[sys.argv.index("-r")]
+        else:
+            replay = False
+        if len(sys.argv) <= 2:
+            season, episode = form_history(sys.argv[1], replay)
+        else:
+             season, episode= int(sys.argv[2]), int(sys.argv[3])
+        play(sys.argv[1], season, episode, inc, ex)
+        save_history(sys.argv[1], season, episode)
+    except Exception as e:
+        if debug:
+            import traceback
+            traceback.print_exc()
+            print(e)
         print("file not found")
 
 
