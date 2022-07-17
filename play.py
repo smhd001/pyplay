@@ -7,7 +7,7 @@ from os.path import expanduser
 from find import find_path, find_sub
 from history import form_history, save_history
 
-debug = False
+debug = True
 # TODO
 """
     1. add sub_inc
@@ -58,7 +58,19 @@ def play(
                     subprocess.run([player, path, *options])
                     return
             print_info(path, sub_list[0])
-            subprocess.run([player, path, *options, "--sub-file=" + sub_list[0]])
+            p = subprocess.run(
+                [player, path, *options, "--sub-file=" + sub_list[0]],
+                stderr=subprocess.PIPE,
+                stdout=subprocess.PIPE,
+                stdin=subprocess.PIPE,
+            )
+            st = p.stdout.decode("utf-8").split("\n")[-2]
+            print(st)
+            # print("lastlin",st)
+            if st == "Exiting... (End of file)":
+                print("end of file")
+            else:
+                print("quiet")
             return
     print_info(path)
     subprocess.run([player, path, *options])
@@ -86,12 +98,13 @@ def main():
         if len(sys.argv) <= 2:
             season, episode = form_history(sys.argv[1], replay)
         else:
-             season, episode= int(sys.argv[2]), int(sys.argv[3])
+            season, episode = int(sys.argv[2]), int(sys.argv[3])
         play(sys.argv[1], season, episode, inc, ex)
         save_history(sys.argv[1], season, episode)
     except Exception as e:
         if debug:
             import traceback
+
             traceback.print_exc()
             print(e)
         print("file not found")
