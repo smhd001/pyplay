@@ -59,10 +59,10 @@ def find_ep(directory: str, season: int, episode: int) -> str:
 def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
     ep = find_ep(directory + "/" + "season" + f"{season:02d}", season, episode)
-    if ep == "":
-        ep = find_ep(directory, season, episode)
     if ep is "":
         ep = find_ep(directory + "/" + "season" + f"{season}", season, episode)
+    if ep == "":
+        ep = find_ep(directory, season, episode)
     return ep
 
 
