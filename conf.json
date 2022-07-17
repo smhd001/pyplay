@@ -1,0 +1,20 @@
+{
+  "conf": {
+    "player": "mpv",
+    "open_sub": true,
+    "is_chose_sub": true,
+    "video_dir": "~/Videos/series",
+    "is_full_screen": true,
+    "options": [
+      "--resume-playback-check-mtime"
+    ],
+    "menu_program": "dmenu",
+    "menu_options": [
+      "-c",
+      "-l 3",
+      "-f"
+    ]
+  },
+  "series": [],
+  "videos": []
+}
