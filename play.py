@@ -64,7 +64,7 @@ def play(
     subprocess.run([player, path, *options])
 
 
-def main():
+def main(program_path: str):
     try:
         if "-ex" in sys.argv:
             ex = sys.argv[sys.argv.index("-ex") + 1]
@@ -84,21 +84,24 @@ def main():
         else:
             replay = False
         if len(sys.argv) <= 2:
-            season, episode = form_history(sys.argv[1], replay)
+            season, episode = form_history(sys.argv[1], replay, program_path)
         else:
-             season, episode= int(sys.argv[2]), int(sys.argv[3])
+            season, episode = int(sys.argv[2]), int(sys.argv[3])
         play(sys.argv[1], season, episode, inc, ex)
-        save_history(sys.argv[1], season, episode)
+        save_history(sys.argv[1], season, episode, program_path)
     except Exception as e:
         if debug:
             import traceback
+
             traceback.print_exc()
             print(e)
         print("file not found")
 
 
 if __name__ == "__main__":
-    with open(sys.argv[0][:-7] + "conf.json") as f:
+    # open config file
+    program_path = sys.argv[0][:sys.argv[0].rindex("/")] + "/"
+    with open(program_path + "conf.json") as f:
         data = json.load(f)
     conf = data["conf"]
     print(conf)
@@ -113,4 +116,4 @@ if __name__ == "__main__":
     is_chose_sub = conf["is_chose_sub"]
     m_args = " ".join(conf["menu_options"])
     m_program = conf["menu_program"]
-    main()
+    main(program_path)
