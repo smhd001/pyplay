@@ -100,7 +100,7 @@ def main(program_path: str):
 
 if __name__ == "__main__":
     # open config file
-    program_path = sys.argv[0][:sys.argv[0].rindex("/")] + "/"
+    program_path = os.path.dirname(__file__) + "/"
     with open(program_path + "conf.json") as f:
         data = json.load(f)
     conf = data["conf"]
