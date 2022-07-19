@@ -7,7 +7,7 @@ from os.path import isdir
 patern of sub
 
 patern s01e02 S1E3 or s01-e02
-regex "[sS]\d+-?[eE]\d+"
+regex "[sS]\d+[-.]?[eE]\d+"
 
 patern 02x01 
 regex \d+x\d+
@@ -59,10 +59,10 @@ def find_ep(directory: str, season: int, episode: int) -> str:
 def find_path(name: str, season: int, episode: int) -> str:
     directory = find_dir(name)
     ep = find_ep(directory + "/" + "season" + f"{season:02d}", season, episode)
-    if ep == "":
-        ep = find_ep(directory, season, episode)
     if ep is "":
         ep = find_ep(directory + "/" + "season" + f"{season}", season, episode)
+    if ep == "":
+        ep = find_ep(directory, season, episode)
     return ep
 
 
@@ -94,7 +94,7 @@ def is_sub_file(name: str) -> bool:
 
 
 def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
-    if s_e := re.findall("[sS]\d+-?[eE]\d+", name):
+    if s_e := re.findall("[sS]\d+[-.]?[eE]\d+", name):
         s_e = re.findall("\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
@@ -104,7 +104,7 @@ def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
 
-    s_e = map(int,re.findall("\d+", name))
+    s_e = map(int, re.findall("\d+", name))
     if episode in s_e:
         return True
     return False
