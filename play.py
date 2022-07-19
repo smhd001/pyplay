@@ -46,6 +46,8 @@ def play(
     name: str, season: int, episode: int, inc_p: list[str], ex_p: list[str]
 ) -> None:
     path = find_path(name, season, episode)
+    if path == "":
+        raise FileNotFoundError("file not found")
     if is_sub:
         sub_list = find_sub(name, season, episode, inc_p, ex_p)
         # print(sub_list)
