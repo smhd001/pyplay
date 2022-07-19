@@ -7,7 +7,12 @@ def form_history(ser_name: str, replay: bool, hist_path) -> (str, int, int):
     season, episode = load_history(ser_name, hist_path)
     if not replay:
         episode += 1
+    print("-------------------------------------------------")
+    print("#")
+    print("#")
     print("playing from history: ", ser_name, "ep", episode, "season", season)
+    print("#")
+    print("#")
     save_history(ser_name, season, episode, hist_path)
     return season, episode
 
