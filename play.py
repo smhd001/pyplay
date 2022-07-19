@@ -89,13 +89,18 @@ def main(program_path: str):
             season, episode = int(sys.argv[2]), int(sys.argv[3])
         play(sys.argv[1], season, episode, inc, ex)
         save_history(sys.argv[1], season, episode, program_path)
-    except Exception as e:
+    except FileNotFoundError as e:
         if debug:
             import traceback
 
             traceback.print_exc()
             print(e)
         print("file not found")
+    except Exception as e:
+        import traceback
+
+        traceback.print_exc()
+        print(e)
 
 
 if __name__ == "__main__":
