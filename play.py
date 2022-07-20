@@ -5,7 +5,7 @@ import subprocess
 import sys
 from os.path import expanduser
 from find import find_path, find_sub
-from history import form_history, save_history
+from history import form_history, save_history, get_last_ser
 
 debug = True
 # TODO
@@ -70,8 +70,18 @@ def arg_parse(args: list[str]) -> (int, int, list[str], list[str]):
         del args[args.index("-ns")]
     else:
         next_season = False
+    if len(args) <= 1:
+        name = get_last_ser()
+        print("-------------------------------------------------")
+        print("#")
+        print("#")
+        print("print last played ser: ", name)
+        print("#")
+        print("#")
+    else:
+        name = args[1]
     if len(args) <= 2:
-        season, episode = form_history(args[1])
+        season, episode = form_history(name)
         if previous:
             episode -= 1
         if next:
@@ -87,7 +97,7 @@ def arg_parse(args: list[str]) -> (int, int, list[str], list[str]):
         print("#")
     else:
         season, episode = int(args[2]), int(args[3])
-    return season, episode, inc, ex
+    return name, season, episode, inc, ex
 
 
 def play(
@@ -129,9 +139,9 @@ def play(
 
 
 def main():
-    season, episode, ex, inc = arg_parse(sys.argv)
+    name, season, episode, ex, inc = arg_parse(sys.argv)
     try:
-        play(sys.argv[1], season, episode, inc, ex)
+        play(name, season, episode, inc, ex)
     except FileNotFoundError as e:
         if debug:
             import traceback
