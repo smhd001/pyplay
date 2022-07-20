@@ -121,7 +121,3 @@ def is_s_match(name: str, season: int) -> bool:
             if int(s_e[0]) != season:
                 return False
     return True
-    # if s_e := re.findall("[sS]\d+", name):
-    #     s_e = re.findall("\d+", s_e[0])
-    #     if int(s_e[0]) != season :
-    #         return False

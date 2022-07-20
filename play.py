@@ -43,7 +43,7 @@ def print_info(path: str, sub: str = "no sub") -> None:
     print()
 
 
-def arg_parse(args: list[str]) -> Tuple[int, int, list[str], list[str]]:
+def arg_parse(args: list[str]) -> Tuple[str, int, int, list[str], list[str]]:
     if "-ex" in args:
         ex = args[args.index("-ex") + 1]
         ex = ex.split(",")
@@ -76,7 +76,7 @@ def arg_parse(args: list[str]) -> Tuple[int, int, list[str], list[str]]:
         print("-------------------------------------------------")
         print("#")
         print("#")
-        print("print last played ser: ", name)
+        print("# play last played serie: ", name)
         print("#")
         print("#")
     else:
@@ -93,7 +93,7 @@ def arg_parse(args: list[str]) -> Tuple[int, int, list[str], list[str]]:
         print("-------------------------------------------------")
         print("#")
         print("#")
-        print(f"playing from history: {episode=} {season=}")
+        print(f"# playing from history: {episode=} {season=}")
         print("#")
         print("#")
     else:
