@@ -1,18 +1,24 @@
 from find import *
 import json
 
+hist_path = os.path.dirname(__file__) + "/"
 
-def form_history(ser_name: str, replay: bool, hist_path) -> (str, int, int):
+def form_history(ser_name: str, replay: bool) -> (str, int, int):
     ser_name = find_dir(ser_name)
-    season, episode = load_history(ser_name, hist_path)
+    season, episode = load_history(ser_name)
     if not replay:
         episode += 1
+    print("-------------------------------------------------")
+    print("#")
+    print("#")
     print("playing from history: ", ser_name, "ep", episode, "season", season)
-    save_history(ser_name, season, episode, hist_path)
+    print("#")
+    print("#")
+    save_history(ser_name, season, episode)
     return season, episode
 
 
-def load_history(ser_name: str, hist_path) -> (int, int):
+def load_history(ser_name: str) -> (int, int):
     ser_name = find_dir(ser_name)
     with open(hist_path + ".history", "r") as f:
         history = json.load(f)
@@ -25,7 +31,7 @@ def load_history(ser_name: str, hist_path) -> (int, int):
     return season, episode
 
 
-def save_history(ser_name: str, season: int, episode: int, hist_path) -> None:
+def save_history(ser_name: str, season: int, episode: int) -> None:
     ser_name = find_dir(ser_name)
     with open(hist_path + ".history", "r") as f:
         history = json.load(f)
