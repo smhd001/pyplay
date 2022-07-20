@@ -42,6 +42,54 @@ def print_info(path: str, sub: str = "no sub") -> None:
     print()
 
 
+def arg_parse(args: list[str]) -> (int, int, list[str], list[str]):
+    if "-ex" in args:
+        ex = args[args.index("-ex") + 1]
+        ex = ex.split(",")
+        del args[args.index("-ex") : args.index("-ex") + 2]
+    else:
+        ex = ""
+    if "-inc" in args:
+        inc = args[args.index("-inc") + 1]
+        inc = inc.split(",")
+        del args[args.index("-inc") : args.index("-inc") + 2]
+    else:
+        inc = ""
+    if "-p" in args:
+        previous = True
+        del args[args.index("-p")]
+    else:
+        previous = False
+    if "-n" in args:
+        next = True
+        del args[args.index("-n")]
+    else:
+        next = False
+    if "-ns" in args:
+        next_season = True
+        del args[args.index("-ns")]
+    else:
+        next_season = False
+    if len(args) <= 2:
+        season, episode = form_history(args[1])
+        if previous:
+            episode -= 1
+        if next:
+            episode += 1
+        if next_season:
+            season += 1
+            episode = 1
+        print("-------------------------------------------------")
+        print("#")
+        print("#")
+        print(f"playing from history: {episode=} {season=}")
+        print("#")
+        print("#")
+    else:
+        season, episode = int(args[2]), int(args[3])
+    return season, episode, inc, ex
+
+
 def play(
     name: str, season: int, episode: int, inc_p: list[str], ex_p: list[str]
 ) -> None:
@@ -71,38 +119,18 @@ def play(
             # print("lastlin",st)
             if st == "Exiting... (End of file)":
                 print("end of file")
-                save_history(sys.argv[1], season, episode)
+                save_history(name, season, episode + 1)
             else:
                 print("quiet")
-                save_history(sys.argv[1], season, episode - 1)
+                save_history(name, season, episode)
             return
     print_info(path)
     subprocess.run([player, path, *options])
 
 
 def main():
+    season, episode, ex, inc = arg_parse(sys.argv)
     try:
-        if "-ex" in sys.argv:
-            ex = sys.argv[sys.argv.index("-ex") + 1]
-            ex = ex.split(",")
-            del sys.argv[sys.argv.index("-ex") : sys.argv.index("-ex") + 2]
-        else:
-            ex = ""
-        if "-inc" in sys.argv:
-            inc = sys.argv[sys.argv.index("-inc") + 1]
-            inc = inc.split(",")
-            del sys.argv[sys.argv.index("-inc") : sys.argv.index("-inc") + 2]
-        else:
-            inc = ""
-        if "-r" in sys.argv:
-            replay = True
-            del sys.argv[sys.argv.index("-r")]
-        else:
-            replay = False
-        if len(sys.argv) <= 2:
-            season, episode = form_history(sys.argv[1], replay)
-        else:
-            season, episode = int(sys.argv[2]), int(sys.argv[3])
         play(sys.argv[1], season, episode, inc, ex)
     except FileNotFoundError as e:
         if debug:

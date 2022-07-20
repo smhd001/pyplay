@@ -3,18 +3,9 @@ import json
 
 hist_path = os.path.dirname(__file__) + "/"
 
-def form_history(ser_name: str, replay: bool) -> (str, int, int):
+def form_history(ser_name: str) -> (str, int, int):
     ser_name = find_dir(ser_name)
     season, episode = load_history(ser_name)
-    if not replay:
-        episode += 1
-    print("-------------------------------------------------")
-    print("#")
-    print("#")
-    print("playing from history: ", ser_name, "ep", episode, "season", season)
-    print("#")
-    print("#")
-    save_history(ser_name, season, episode)
     return season, episode
 
 
