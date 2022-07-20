@@ -71,8 +71,10 @@ def play(
             # print("lastlin",st)
             if st == "Exiting... (End of file)":
                 print("end of file")
+                save_history(sys.argv[1], season, episode, program_path)
             else:
                 print("quiet")
+                save_history(sys.argv[1], season, episode - 1, program_path)
             return
     print_info(path)
     subprocess.run([player, path, *options])
@@ -102,7 +104,6 @@ def main(program_path: str):
         else:
             season, episode = int(sys.argv[2]), int(sys.argv[3])
         play(sys.argv[1], season, episode, inc, ex)
-        save_history(sys.argv[1], season, episode, program_path)
     except FileNotFoundError as e:
         if debug:
             import traceback
