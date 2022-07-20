@@ -1,15 +1,17 @@
+from typing import Tuple
 from find import *
 import json
 
 hist_path = os.path.dirname(__file__) + "/"
 
-def form_history(ser_name: str) -> (str, int, int):
+
+def form_history(ser_name: str) -> Tuple[int, int]:
     ser_name = find_dir(ser_name)
     season, episode = load_history(ser_name)
     return season, episode
 
 
-def load_history(ser_name: str) -> (int, int):
+def load_history(ser_name: str) -> Tuple[int, int]:
     ser_name = find_dir(ser_name)
     with open(hist_path + ".history", "r") as f:
         history = json.load(f)

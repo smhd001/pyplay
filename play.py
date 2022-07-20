@@ -4,6 +4,7 @@ import os
 import subprocess
 import sys
 from os.path import expanduser
+from typing import Tuple
 from find import find_path, find_sub
 from history import form_history, save_history
 
@@ -42,19 +43,19 @@ def print_info(path: str, sub: str = "no sub") -> None:
     print()
 
 
-def arg_parse(args: list[str]) -> (int, int, list[str], list[str]):
+def arg_parse(args: list[str]) -> Tuple[int, int, list[str], list[str]]:
     if "-ex" in args:
         ex = args[args.index("-ex") + 1]
         ex = ex.split(",")
         del args[args.index("-ex") : args.index("-ex") + 2]
     else:
-        ex = ""
+        ex = []
     if "-inc" in args:
         inc = args[args.index("-inc") + 1]
         inc = inc.split(",")
         del args[args.index("-inc") : args.index("-inc") + 2]
     else:
-        inc = ""
+        inc = []
     if "-p" in args:
         previous = True
         del args[args.index("-p")]
