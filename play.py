@@ -103,58 +103,42 @@ def arg_parse(args: list[str]) -> Tuple[str, int, int, list[str], list[str]]:
 
 def play(
     name: str, season: int, episode: int, inc_p: list[str], ex_p: list[str]
-) -> None:
+) -> subprocess.CompletedProcess[bytes]:
     path = find_path(name, season, episode)
     if path == "":
         raise FileNotFoundError("file not found")
     if is_sub:
         sub_list = find_sub(name, season, episode, inc_p, ex_p)
-        # print(sub_list)
         if sub_list:
-            if len(sub_list) > 1:
-                if is_chose_sub:
-                    sub_list[0] = menu_chose(sub_list)
-                if not sub_list[0]:
-                    print_info(path)
-                    subprocess.run([player, path, *options])
-                    return
-            print_info(path, sub_list[0])
-            p = subprocess.run(
-                [player, path, *options, "--sub-file=" + sub_list[0]],
-                stderr=subprocess.PIPE,
-                stdout=subprocess.PIPE,
-                stdin=subprocess.PIPE,
-            )
-            st = p.stdout.decode("utf-8").split("\n")[-2]
-            print(st)
-            # print("lastlin",st)
-            if st == "Exiting... (End of file)":
-                print("end of file")
-                save_history(name, season, episode + 1)
-            else:
-                print("quiet")
-                save_history(name, season, episode)
-            return
+            if len(sub_list) > 1 and is_chose_sub:
+                sub_list[0] = menu_chose(sub_list)
+            if sub_list[0]:
+                print_info(path, sub_list[0])
+                return subprocess.run(
+                    [player, path, *options, "--sub-file=" + sub_list[0]],
+                    stderr=subprocess.PIPE,
+                    stdout=subprocess.PIPE,
+                    stdin=subprocess.PIPE,
+                )
     print_info(path)
-    subprocess.run([player, path, *options])
+    return subprocess.run(
+        [player, path, *options],
+        stderr=subprocess.PIPE,
+        stdout=subprocess.PIPE,
+        stdin=subprocess.PIPE,
+    )
 
 
 def main():
     name, season, episode, ex, inc = arg_parse(sys.argv)
-    try:
-        play(name, season, episode, inc, ex)
-    except FileNotFoundError as e:
-        if debug:
-            import traceback
-
-            traceback.print_exc()
-            print(e)
-        print("file not found")
-    except Exception as e:
-        import traceback
-
-        traceback.print_exc()
-        print(e)
+    p = play(name, season, episode, inc, ex)
+    st = p.stdout.decode("utf-8")
+    print(st)
+    st = st.split("\n")[-2]
+    if st == "Exiting... (End of file)":
+        save_history(name, season, episode + 1)
+    else:
+        save_history(name, season, episode)
 
 
 if __name__ == "__main__":
