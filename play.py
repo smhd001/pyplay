@@ -75,9 +75,7 @@ def arg_parse(args: list[str]) -> Tuple[str, int, int, list[str], list[str]]:
         name = get_last_ser()
         print("-------------------------------------------------")
         print("#")
-        print("#")
         print("# play last played serie: ", name)
-        print("#")
         print("#")
     else:
         name = args[1]
@@ -92,9 +90,7 @@ def arg_parse(args: list[str]) -> Tuple[str, int, int, list[str], list[str]]:
             episode = 1
         print("-------------------------------------------------")
         print("#")
-        print("#")
-        print(f"# playing from history: {episode=} {season=}")
-        print("#")
+        print(f"# playing from history: {episode = } {season = }")
         print("#")
     else:
         season, episode = int(args[2]), int(args[3])
@@ -153,7 +149,6 @@ if __name__ == "__main__":
     options = conf["options"]
     if conf["is_full_screen"]:
         options.append("--fs")
-    print(options)
     is_sub = conf["open_sub"]
     is_chose_sub = conf["is_chose_sub"]
     m_args = " ".join(conf["menu_options"])
