@@ -2,7 +2,7 @@
   "conf": {
     "player": "mpv",
     "open_sub": true,
-    "is_chose_sub": true,
+    "chose_sub": true,
     "video_dir": "~/Videos/series",
     "is_full_screen": true,
     "options": [

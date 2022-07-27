@@ -23,8 +23,8 @@ def menu_chose(s: list) -> str:
     for i in s:
         subs += i
         subs += "\n"
-    a = os.popen("echo " + '"' + subs[:-1] + '"' + "|" + m_program + " " + m_args)
-    return a.read()[:-1]
+    ans = os.popen("echo " + '"' + subs[:-1] + '"' + "|" + m_program + " " + m_args)
+    return ans.read()[:-1]
 
 
 def print_info(path: str, sub: str = "no sub") -> None:
@@ -106,7 +106,7 @@ def play(
     if is_sub:
         sub_list = find_sub(name, season, episode, inc_p, ex_p)
         if sub_list:
-            if len(sub_list) > 1 and is_chose_sub:
+            if len(sub_list) > 1 and chose_sub:
                 sub_list[0] = menu_chose(sub_list)
             if sub_list[0]:
                 print_info(path, sub_list[0])
@@ -127,11 +127,11 @@ def play(
 
 def main():
     name, season, episode, ex, inc = arg_parse(sys.argv)
-    p = play(name, season, episode, inc, ex)
-    st = p.stdout.decode("utf-8")
+    process = play(name, season, episode, inc, ex)
+    std_out = process.stdout.decode("utf-8")
     print(st)
-    st = st.split("\n")[-2]
-    if st == "Exiting... (End of file)":
+    exit_status = std_out.split("\n")[-2]
+    if exit_status == "Exiting... (End of file)":
         save_history(name, season, episode + 1)
     else:
         save_history(name, season, episode)
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     if conf["is_full_screen"]:
         options.append("--fs")
     is_sub = conf["open_sub"]
-    is_chose_sub = conf["is_chose_sub"]
+    chose_sub = conf["is_chose_sub"]
     m_args = " ".join(conf["menu_options"])
     m_program = conf["menu_program"]
     main()
