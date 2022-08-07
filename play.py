@@ -129,7 +129,7 @@ def main():
     name, season, episode, ex, inc = arg_parse(sys.argv)
     process = play(name, season, episode, inc, ex)
     std_out = process.stdout.decode("utf-8")
-    print(st)
+    print(std_out)
     exit_status = std_out.split("\n")[-2]
     if exit_status == "Exiting... (End of file)":
         save_history(name, season, episode + 1)
@@ -150,7 +150,7 @@ if __name__ == "__main__":
     if conf["is_full_screen"]:
         options.append("--fs")
     is_sub = conf["open_sub"]
-    chose_sub = conf["is_chose_sub"]
+    chose_sub = conf["chose_sub"]
     m_args = " ".join(conf["menu_options"])
     m_program = conf["menu_program"]
     main()
