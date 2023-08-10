@@ -10,7 +10,6 @@
     ],
     "menu_program": "dmenu",
     "menu_options": [
-      "-c",
       "-l 3",
       "-f"
     ]

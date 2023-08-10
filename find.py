@@ -3,11 +3,11 @@ import re
 from glob import glob
 from os.path import isdir
 
-"""
+r"""
 patern of sub
 
 patern s01e02 S1E3 or s01-e02
-regex "[sS]\d+[-.]?[eE]\d+"
+regex r"[sS]\d+[-.]?[eE]\d+"
 
 patern 02x01 
 regex \d+x\d+
@@ -94,30 +94,30 @@ def is_sub_file(name: str) -> bool:
 
 
 def is_S_and_E_match(name: str, season: int, episode: int) -> bool:
-    if s_e := re.findall("[sS]\d+[-.]?[eE]\d+", name):
-        s_e = re.findall("\d+", s_e[0])
+    if s_e := re.findall(r"[sS]\d+[-.]?[eE]\d+", name):
+        s_e = re.findall(r"\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
 
-    if s_e := re.findall("\d+x\d+", name):
-        s_e = re.findall("\d+", s_e[0])
+    if s_e := re.findall(r"\d+x\d+", name):
+        s_e = re.findall(r"\d+", s_e[0])
         if int(s_e[0]) != season or int(s_e[1]) != episode:
             return False
 
-    s_e = map(int, re.findall("\d+", name))
+    s_e = map(int, re.findall(r"\d+", name))
     if episode in s_e:
         return True
     return False
 
 
 def is_s_match(name: str, season: int) -> bool:
-    if s := re.findall("[sS]eason\d+", name):
-        s = re.findall("\d+", s[0])
+    if s := re.findall(r"[sS]eason\d+", name):
+        s = re.findall(r"\d+", s[0])
         if int(s[0]) != season:
             return False
     for dirs in name.split("/"):
-        if s_e := re.findall("^[sS]\d+", dirs):
-            s_e = re.findall("\d+", s_e[0])
+        if s_e := re.findall(r"^[sS]\d+", dirs):
+            s_e = re.findall(r"\d+", s_e[0])
             if int(s_e[0]) != season:
                 return False
     return True
