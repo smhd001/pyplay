@@ -14,9 +14,10 @@ debug = True
     1. add sub_inc
     2. add sub_exc
     3. add history
-    4. add overiding config witth args
-    5. sub_exc and sub_exc should be case insensetive
+    4. add overriding config with args
+    5. sub_exc and sub_exc should be case insensitive
 """
+
 
 # bug  pl office 7 23
 def menu_chose(s: list) -> str:
@@ -24,7 +25,9 @@ def menu_chose(s: list) -> str:
     for i in s:
         subs += i
         subs += "\n"
-    ans = os.popen("echo " + '"' + subs[:-1] + '"' + "|" + menu_program + " " + menu_args)
+    ans = os.popen(
+        "echo " + '"' + subs[:-1] + '"' + "|" + menu_program + " " + menu_args
+    )
     return ans.read()[:-1]
 
 
@@ -75,8 +78,8 @@ def arg_parse(args: list[str]) -> Tuple[str, int, int, list[str], list[str]]:
     else:
         next_season = False
     if "--" in args:
-        options += args[args.index("--") + 1:]
-        del args[args.index("--"):]
+        options += args[args.index("--") + 1 :]
+        del args[args.index("--") :]
     if len(args) <= 1:
         name = get_last_ser()
         print("-------------------------------------------------")
@@ -108,7 +111,7 @@ def play(
 ) -> subprocess.CompletedProcess[bytes]:
     path = find_path(name, season, episode)
     if path == "":
-        print(f"tryed to fiind {name=} {season=} {episode=}")
+        print(f"tried to fiind {name=} {season=} {episode=}")
         raise FileNotFoundError("file not found")
     if is_sub:
         sub_list = find_sub(name, season, episode, inc_p, ex_p)
@@ -133,7 +136,7 @@ def play(
 
 
 def main():
-    name, season, episode,inc ,ex = arg_parse(sys.argv)
+    name, season, episode, inc, ex = arg_parse(sys.argv)
     process = play(name, season, episode, inc, ex)
     std_out = process.stdout.decode("utf-8")
     print(std_out)

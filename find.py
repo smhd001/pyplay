@@ -4,16 +4,16 @@ from glob import glob
 from os.path import isdir
 
 r"""
-patern of sub
+pattern of sub
 
-patern s01e02 S1E3 or s01-e02
+pattern s01e02 S1E3 or s01-e02
 regex r"[sS]\d+[-.]?[eE]\d+"
 
-patern 02x01 
+pattern 02x01
 regex \d+x\d+
 
-dir patern 
-  s01/  and season01/ season1/ 
+dir pattern
+  s01/  and season01/ season1/
 """
 """
 TODO

@@ -1,13 +1,15 @@
 from typing import Tuple
-from find import *
+from find import find_dir
 from pathlib import Path
 import json
+import os
 
 hist_path = os.path.dirname(__file__) + "/" + ".history"
 path = Path(hist_path)
 if not path.exists():
     path.touch()
     path.write_text("{}")
+
 
 def form_history(ser_name: str) -> Tuple[int, int]:
     ser_name = find_dir(ser_name)
